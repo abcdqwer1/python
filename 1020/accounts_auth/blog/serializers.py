@@ -4,6 +4,7 @@ from rest_framework.authtoken.models import Token # 토큰 모델 Token.objects.
 from rest_framework.validators import UniqueValidator # 중복 검사(회원 가입할 때 동일한 아이디가 있는지 검사 등)
 from django.contrib.auth.password_validation import validate_password # 비밀번호 유효성 검사
 from django.contrib.auth.models import User # User 모델(기본 User모델 사용시 사용자명, 비밀번호, 이메일 필드만 사용 가능 => 상속받아 커스터마이징 가능)
+from django.contrib.auth import authenticate # 인증 모듈
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -55,3 +56,24 @@ class RegisterSerializer(serializers.ModelSerializer):
         # print(token)
         return user
     
+
+class LoginSerializer(serializers.ModelSerializer):
+    '''
+    로그인 시리얼라이저
+    '''
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(write_only=True, required=True) # write_only=True: password 필드는 읽기 전용으로 설정
+
+    class Meta:
+        model = User
+        fields = ['username', 'password'] # 로그인 시 아이디와 비밀번호만 필요
+
+    def validate(self, data):
+        print(data)
+        user = authenticate(**data)
+        print(user)
+        print(dir(user))
+        if user:
+            token = Token.objects.get(user=user)
+            return token
+        raise serializers.ValidationError("유효하지 않은 로그인입니다.")
