@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOG main</title>
+</head>
+
+<body>
+    <header>post_list header</header>
+
+    {% if post_list.exists %}
+    {% for post in object_list %}
+            <section class="body">
+                <h2 class='contents-heading'>{{ post.title }}</h2>
+                <p class='contents-text'>{{ post.content }}</p>
+                <p class='contents-updated' style="font-size: small;">최종 수정 날짜: {{ post.updated_at }}</p>
+                <a class="btn" href="{% url 'blog:post_detail' post.pk %}">자세히</a>
+                <br><br><br><br>
+            </section>
+    {% endfor %}
+    {% else %}
+    <p>게시물이 없습니다. 첫번째 게시물에 주인공이 되세요!</p>
+    {% endif %}
+
+    <footer>post_list footer</footer>
+</body>
+</html>
