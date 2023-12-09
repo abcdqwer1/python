@@ -1,0 +1,31 @@
+from django.http import HttpResponse
+
+
+# def index(request):
+#     return HttpResponse("Hello, world.")
+
+# def index(request):
+#     data = {
+#         "name": "이창현",
+#         "nickname": "hello",
+#         "age": 30,
+#     }
+#     return HttpResponse(data)
+
+# def index(request):
+#     data = {
+#         "name": "이창현",
+#         "nickname": "hello",
+#         "age": 30,
+#     }
+#     return HttpResponse(str(data))
+
+def index(request):
+    function = {
+        "add": "더하기",
+        "sub": "빼기",
+    }
+    data = {"name": "Django", "age": 15, "function": function}
+    # return HttpResponse("<h1>This is HTML</h1>", content_type="text/html")
+    # return HttpResponse(str(data), content_type="application/json")
+    return JsonResponse(data)
